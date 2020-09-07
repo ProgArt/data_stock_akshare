@@ -48,3 +48,30 @@
     
    1. 由于 GitHub 服务器在国外，访问此数据接口最好使用代理访问
    2. 如没有代理的情况下，多重复请求几次
+   
+8. 返回值字段错位
+    
+   1. 升级 pandas 到最新版本
+
+9. Linux 系统显示 `execjs._exceptions.RuntimeUnavailableError: Could not find an available JavaScript runtime.`
+
+    1. 需要安装 `nodejs`
+    2. 参考[文章](https://blog.csdn.net/qq_36853469/article/details/106401389)
+
+10. 将数据在 IDE 全显示，避免折叠显示不全的情况
+
+    1. 全局设置 `pandas`，使用方法: 
+    
+```python
+import pandas as pd
+import akshare as ak
+# 列名与数据对其显示
+pd.set_option('display.unicode.ambiguous_as_wide', True)
+pd.set_option('display.unicode.east_asian_width', True)
+# 显示所有列
+pd.set_option('display.max_columns', None)
+# 显示所有行
+pd.set_option('display.max_rows', None)
+stock_zh_index_daily_df = ak.stock_zh_index_daily(symbol="sz399552")
+print(stock_zh_index_daily_df)
+```

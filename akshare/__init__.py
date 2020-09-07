@@ -856,7 +856,7 @@ amac_manager_cancelled_info # 中国证券投资基金业协会-信息公示-诚
 0.4.27: test: automate test
 0.4.28: test: automate test
 0.4.29: feats: add currency interface
-0.4.30: fix: roll_yield.py/get_roll_yield: CUefp error
+0.4.30: fix: futures_roll_yield.py/get_roll_yield: CUefp error
 0.4.31: format: format currency.py
 0.4.32: fix: china_bond.py
 0.4.33: add: jyfm_tools_futures_arbitrage_matrix for jyfm futures
@@ -948,10 +948,233 @@ amac_manager_cancelled_info # 中国证券投资基金业协会-信息公示-诚
 0.5.20: add: stock_restricted_shares, stock_circulate_stock_holder
 0.5.21: add: futures_dce_position_rank
 0.5.22: fix: fix futures_dce_position_rank return format
+0.5.23: add: stock_sector_spot, stock_sector_detail
+0.5.24: fix: futures_dce_position_rank
+0.5.25: fix: futures_dce_position_rank return fields
+0.5.26: add: stock_info
+0.5.27: add: stock_em_hsgt_hold_stock
+0.5.28: add: stock_fund_stock_holder, stock_main_stock_holder
+0.5.29: fix: stock_em_sy
+0.5.30: fix: air_zhenqi.py
+0.5.31: fix: add futures_dce_position_rank_other to fix futures_dce_position_rank at 20160104
+0.5.32: fix: futures_dce_position_rank_other return format
+0.5.33: add: zh_bond_cov_sina and set pandas version
+0.5.34: fix: set pandas version > 0.25
+0.5.35: add: bond_cov_comparison and bond_zh_cov
+0.5.36: fix: stock_info_sz_name_code return code format
+0.5.37: add: stock_hold
+0.5.38: fix: futures_dce_position_rank_other exchange symbol and variety
+0.5.39: add: stock_recommend
+0.5.40: fix: stock_recommend output format
+0.5.41: fix: deprecated requests-html module
+0.5.42: fix: reformat investing interface
+0.5.43: fix: qhck interface
+0.5.44: add: LME holding and stock report
+0.5.45: fix: transform the data type of stock_zh_a_spot output
+0.5.46: add: CFTC holding and stock
+0.5.47: fix: fix index_investing_global interface
+0.5.48: fix: fix stock_info_a_code_name interface
+0.5.49: fix: fix stock_zh_a_daily interface
+0.5.50: fix: fix get_roll_yield_bar interface
+0.5.51: add: stock_summary
+0.5.52: fix: fix get_roll_yield_bar interface
+0.5.53: add: add watch_jinshi_quotes interface
+0.5.54: add: add stock_js_price interface
+0.5.55: add: add futures_czce_warehouse_receipt interface
+0.5.56: add: add futures_dce_warehouse_receipt, futures_shfe_warehouse_receipt interface
+0.5.57: fix: fix macro data interface
+0.5.58: add: add stock_em_qsjy interface
+0.5.59: fix: fix fund interface
+0.5.60: fix: add index_bloomberg_billionaires interface
+0.5.61: fix: fix futures_rule interface
+0.5.62: add: add stock_a_pe, stock_a_pb interface
+0.5.63: add: add stock_a_lg_indicator interface
+0.5.64: add: add stock_a_high_low_statistics interface
+0.5.65: add: add stock_a_below_net_asset_statistics interface
+0.5.66: fix: fix stock_zh_a_daily default return unadjusted data
+0.5.67: fix: fix R and MATLAB compatibility issues
+0.5.68: add: add option_commodity_sina interface
+0.5.69: fix: fix option_commodity_sina interface
+0.5.70: merge: merge #4048
+0.5.71: add: add tool_trade_date_hist interface
+0.5.72: add: add fund_etf_category_sina, fund_etf_hist_sina interface
+0.5.73: add: add stock_report_disclosure interface
+0.5.74: add: add stock_zh_a_minute interface
+0.5.75: add: add futures_zh_minute_sina interface
+0.5.76: add: add option_sina_finance_minute interface
+0.5.77: fix: fix currency_hist interface return data format
+0.5.78: add: add hold field in futures_zh_minute_sina interface
+0.5.79: add: add stock_report_fund_hold interface
+0.5.80: fix: fix PG to futures cons file
+0.5.81: add: add stock_zh_index_hist_csindex interface
+0.5.82: fix: fix LU to futures cons file
+0.5.83: fix: fix qhkc broker_positions_process interface
+0.5.84: fix: fix tool_trade_date_hist_sina interface and update calendar.json
+0.5.85: add: add index_stock_hist interface
+0.5.86: fix: fix code format
+0.5.87: fix: fix cot interface
+0.5.88: fix: fix stock_em_account interface
+0.5.89: add: add macro_china_new_financial_credit interface
+0.5.90: add: add stock_sina_lhb interface
+0.5.91: fix: fix covid for python3.8
+0.5.92: fix: fix futures_daily_bar interface
+0.5.93: add: add macro_china_fx_gold interface
+0.5.94: add: add stock_zh_index_daily_em, bond_cov_jsl interface
+0.5.95: fix: fix get_dce_option_daily interface
+0.5.96: add: add stock_em_hsgt_hist interface
+0.5.97: fix: fix remove mplfinance package in requirements.txt
+0.5.98: add: add stock_hk_eniu_indicator interface
+0.5.99: fix: fix stock_zh_ah_daily interface
+0.6.1: fix: fix stock_zh_ah_daily interface set default value
+0.6.2: fix: fix stock_zh_a_minute interface and add adjust parameter
+0.6.3: fix: fix stock_zh_a_minute interface
+0.6.4: add: add macro_china interface
+0.6.5: add: add macro_china_wbck interface
+0.6.6: fix: fix macro_china_wbck interface
+0.6.7: add: add index_stock_cons_sina interface
+0.6.8: fix: fix option_commodity interface
+0.6.9: fix: fix stock_em_gpzy_pledge_ratio interface
+0.6.10: add: add macro_china_hb, macro_china_gksccz, macro_china_bond_public interface
+0.6.11: fix: fix python version should be 3.7 later
+0.6.12: fix: fix stock_em_gpzy_distribute_statistics_company interface
+0.6.13: add: add stock_us_fundamental interface
+0.6.14: fix: fix stock_us_fundamental interface
+0.6.15: fix: fix macro_china_market_margin_sh interface
+0.6.16: fix: fix stock_us_daily time period and adjust for specific stock
+0.6.17: fix: fix stock_js_weibo_report interface
+0.6.18: fix: fix get_shfe_option_daily interface column name
+0.6.19: fix: fix stock_hk_daily interface to process non-dividend stock
+0.6.20: fix: fix covid_baidu interface
+0.6.21: fix: fix futures_hf_spot interface
+0.6.22: fix: fix stock_zh_index_daily_tx interface
 """
 
-__version__ = "0.5.22"
+__version__ = "0.6.22"
 __author__ = "Albert King"
+
+"""
+新浪财经-龙虎榜
+"""
+from akshare.stock_feature.stock_sina_lhb import (
+    stock_sina_lhb_detail_daily,
+    stock_sina_lhb_ggtj,
+    stock_sina_lhb_jgmx,
+    stock_sina_lhb_jgzz,
+    stock_sina_lhb_yytj,
+)
+
+"""
+中证指数
+"""
+from akshare.index.zh_stock_index_csindex import stock_zh_index_hist_csindex
+
+"""
+股票基金持仓数据
+"""
+from akshare.stock.stock_fund_hold import stock_report_fund_hold
+
+"""
+期货分钟数据
+"""
+from akshare.futures.futures_zh_sina import futures_zh_minute_sina
+
+"""
+股票财务报告预约披露
+"""
+from akshare.stock_feature.stock_cninfo_yjyg import stock_report_disclosure
+
+"""
+基金行情
+"""
+from akshare.fund.fund_etf import fund_etf_hist_sina, fund_etf_category_sina
+
+"""
+交易日历
+"""
+from akshare.tool.trade_date_hist import tool_trade_date_hist_sina
+
+"""
+commodity option
+"""
+from akshare.option.option_commodity_sina import (
+    option_sina_commodity_contract_list,
+    option_sina_commodity_dict,
+    option_sina_commodity_hist,
+)
+
+"""
+A 股PE和PB
+"""
+from akshare.stock_feature.stock_a_pb import stock_a_pb
+from akshare.stock_feature.stock_a_pe import stock_a_pe
+from akshare.stock_feature.stock_a_indicator import stock_a_lg_indicator, stock_hk_eniu_indicator
+from akshare.stock_feature.stock_a_high_low import stock_a_high_low_statistics
+from akshare.stock_feature.stock_a_below_net_asset_statistics import (
+    stock_a_below_net_asset_statistics,
+)
+
+"""
+彭博亿万富豪指数
+"""
+from akshare.fortune.fortune_bloomberg import index_bloomberg_billionaires
+
+"""
+stock-券商业绩月报
+"""
+from akshare.stock_feature.stock_em_qsjy import stock_em_qsjy
+
+"""
+futures-warehouse-receipt
+"""
+from akshare.futures.futures_warehouse_receipt import (
+    futures_czce_warehouse_receipt,
+    futures_dce_warehouse_receipt,
+    futures_shfe_warehouse_receipt,
+)
+
+"""
+stock-js
+"""
+from akshare.stock.stock_js_us import stock_js_price
+
+"""
+stock-summary
+"""
+from akshare.stock.stock_summary import stock_sse_summary, stock_szse_summary
+
+"""
+股票-机构推荐池
+"""
+from akshare.stock_fundamental.stock_recommend import (
+    stock_institute_recommend,
+    stock_institute_recommend_detail,
+)
+
+"""
+股票-机构持股
+"""
+from akshare.stock_fundamental.stock_hold import (
+    stock_institute_hold_detail,
+    stock_institute_hold,
+)
+
+"""
+stock-info
+"""
+from akshare.stock.stock_info import (
+    stock_info_sh_delist,
+    stock_info_sz_delist,
+    stock_info_a_code_name,
+    stock_info_sh_name_code,
+    stock_info_sz_name_code,
+    stock_info_sz_change_name,
+    stock_info_change_name,
+)
+
+"""
+stock-sector
+"""
+from akshare.stock.stock_industry import stock_sector_spot, stock_sector_detail
 
 """
 stock-fundamental
@@ -965,6 +1188,8 @@ from akshare.stock_fundamental.stock_finance import (
     stock_history_dividend,
     stock_circulate_stock_holder,
     stock_restricted_shares,
+    stock_fund_stock_holder,
+    stock_main_stock_holder,
 )
 
 """
@@ -1065,6 +1290,10 @@ from akshare.stock_feature.stock_em_hsgt import (
     stock_em_hsgt_south_acc_flow_in,
     stock_em_hsgt_south_cash,
     stock_em_hsgt_south_net_flow_in,
+    stock_em_hsgt_hold_stock,
+    stock_em_hsgt_hist,
+    stock_em_hsgt_institution_statistics,
+    stock_em_hsgt_stock_statistics,
 )
 
 """
@@ -1126,6 +1355,7 @@ from akshare.option.option_finance_sina import (
     option_sina_sse_greeks,
     option_sina_sse_minute,
     option_sina_sse_daily,
+    option_sina_finance_minute,
 )
 
 """
@@ -1149,7 +1379,13 @@ from akshare.event.franchise import franchise_china
 债券-沪深债券
 """
 from akshare.bond.zh_bond_sina import bond_zh_hs_daily, bond_zh_hs_spot
-from akshare.bond.zh_bond_cov_sina import bond_zh_hs_cov_daily, bond_zh_hs_cov_spot
+from akshare.bond.zh_bond_cov_sina import (
+    bond_zh_hs_cov_daily,
+    bond_zh_hs_cov_spot,
+    bond_cov_comparison,
+    bond_zh_cov,
+)
+from akshare.bond.bond_convert import bond_cov_jsl
 
 """
 for pro api
@@ -1261,6 +1497,8 @@ from akshare.economic.macro_euro import (
     macro_euro_trade_balance,
     macro_euro_unemployment_rate_mom,
     macro_euro_zew_economic_sentiment,
+    macro_euro_lme_holding,
+    macro_euro_lme_stock,
 )
 
 """
@@ -1375,6 +1613,8 @@ from akshare.index.index_yw import index_yw
 from akshare.index.index_cons import (
     index_stock_info,
     index_stock_cons,
+    index_stock_hist,
+    index_stock_cons_sina,
 )
 
 """
@@ -1424,7 +1664,7 @@ from akshare.stock_feature.stock_em_gpzy import (
 from akshare.stock_feature.stock_em_jgdy import stock_em_jgdy_tj, stock_em_jgdy_detail
 
 """
-新浪主力连续接口
+IT桔子
 """
 from akshare.fortune.it_juzi import death_company, maxima_company, nicorn_company
 
@@ -1572,7 +1812,8 @@ from akshare.air.time_and_date import sunrise_daily, sunrise_monthly
 """
 金十财经-实时监控
 """
-from akshare.ws.jinshi import watch_jinshi
+from akshare.ws.js_ws_fx import watch_jinshi_fx
+from akshare.ws.js_ws_quotes import watch_jinshi_quotes
 
 """
 新浪-指数实时行情和历史行情
@@ -1590,6 +1831,7 @@ from akshare.index.zh_stock_index_sina import (
     stock_zh_index_daily,
     stock_zh_index_spot,
     stock_zh_index_daily_tx,
+    stock_zh_index_daily_em,
 )
 
 """
@@ -1627,7 +1869,11 @@ from akshare.stock.zh_stock_kcb_sina import stock_zh_kcb_spot, stock_zh_kcb_dail
 """
 A股
 """
-from akshare.stock.zh_stock_a_sina import stock_zh_a_spot, stock_zh_a_daily
+from akshare.stock.zh_stock_a_sina import (
+    stock_zh_a_spot,
+    stock_zh_a_daily,
+    stock_zh_a_minute,
+)
 
 """
 A+H股
@@ -1654,7 +1900,7 @@ from akshare.option.option_finance import (
 """
 新浪-美股实时行情数据和历史行情数据(前复权)
 """
-from akshare.stock.us_stock_sina import stock_us_daily, stock_us_spot, get_us_stock_name
+from akshare.stock.us_stock_sina import stock_us_daily, stock_us_spot, get_us_stock_name, stock_us_fundamental
 
 """
 新浪-港股实时行情数据和历史数据(前复权和后复权因子)
@@ -1664,7 +1910,7 @@ from akshare.stock.hk_stock_sina import stock_hk_daily, stock_hk_spot
 """
 新浪-期货实时数据
 """
-from akshare.futures.zh_futures_sina import futures_zh_spot, match_main_contract
+from akshare.futures.futures_zh_sina import futures_zh_spot, match_main_contract
 
 """
 西本新干线-指数数据
@@ -1763,6 +2009,10 @@ from akshare.economic.macro_usa import (
     macro_usa_ism_non_pmi,
     macro_usa_ism_pmi,
     macro_usa_job_cuts,
+    macro_usa_cftc_nc_holding,
+    macro_usa_cftc_c_holding,
+    macro_usa_cftc_merchant_currency_holding,
+    macro_usa_cftc_merchant_goods_holding,
 )
 
 """
@@ -1798,6 +2048,20 @@ from akshare.economic.macro_china import (
     macro_china_new_house_price,
     macro_china_enterprise_boom_index,
     macro_china_national_tax_receipts,
+    macro_china_new_financial_credit,
+    macro_china_fx_gold,
+    macro_china_cpi,
+    macro_china_gdp,
+    macro_china_ppi,
+    macro_china_pmi,
+    macro_china_gdzctz,
+    macro_china_hgjck,
+    macro_china_czsr,
+    macro_china_whxd,
+    macro_china_wbck,
+    macro_china_bond_public,
+    macro_china_gksccz,
+    macro_china_hb,
 )
 
 """
@@ -1830,12 +2094,18 @@ from akshare.option.option_commodity import (
 """
 英为财情-债券
 """
-from akshare.bond.investing_bond import get_country_bond  # 债券-全球政府债券行情与收益率
+from akshare.bond.bond_investing import (
+    bond_investing_global,
+    bond_investing_global_country_name_url,
+)
 
 """
 英为财情-指数
 """
-from akshare.index.index_investing import get_country_index  # 股票指数-全球股指与期货指数数据接口
+from akshare.index.index_investing import (
+    index_investing_global,
+    index_investing_global_country_name_url,
+)
 
 """
 99期货-期货库存数据
@@ -1896,6 +2166,7 @@ from akshare.futures.cot import (
     get_dce_rank_table,
     get_cffex_rank_table,
     futures_dce_position_rank,
+    futures_dce_position_rank_other,
 )
 
 """
@@ -1906,12 +2177,12 @@ from akshare.futures.receipt import get_receipt
 """
 大宗商品展期收益率数据
 """
-from akshare.futures.roll_yield import get_roll_yield_bar, get_roll_yield
+from akshare.futures.futures_roll_yield import get_roll_yield_bar, get_roll_yield
 
 """
 交易所日线行情数据
 """
-from akshare.futures.daily_bar import (
+from akshare.futures.futures_daily_bar import (
     get_cffex_daily,
     get_czce_daily,
     get_shfe_v_wap,

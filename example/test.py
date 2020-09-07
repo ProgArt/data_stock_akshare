@@ -1,5 +1,10 @@
+# -*- coding:utf-8 -*-
+# /usr/bin/env python
+"""
+Date: 2020/5/4 9:07
+Desc: test
+"""
 import akshare
-import empyrical
 
 
 def test():
@@ -52,7 +57,7 @@ def test():
 
     # ----------------------------------------------------------------------
     print('\n' + '-' * 80 + '\n日线行情获取')
-    df = akshare.get_futures_daily(start_day='20181210', end_day='20181210', market='DCE', index_bar=True)
+    df = akshare.get_futures_daily(start_date='20181210', end_date='20181210', market='DCE', index_bar=True)
     print(df)
 
 

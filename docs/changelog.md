@@ -1315,4 +1315,202 @@ amac_manager_cancelled_info # 中国证券投资基金业协会-信息公示-诚
 0.5.21: add: futures_dce_position_rank
 
 0.5.22: fix: fix futures_dce_position_rank return format
+
+0.5.23: add: stock_sector_spot, stock_sector_detail
+
+0.5.24: fix: futures_dce_position_rank
+
+0.5.25: fix: futures_dce_position_rank return fields
+
+0.5.26: add: stock_info
+
+0.5.27: add: stock_em_hsgt_hold_stock
+
+0.5.28: add: stock_fund_stock_holder, stock_main_stock_holder
+
+0.5.29: fix: stock_em_sy
+
+0.5.30: fix: air_zhenqi.py
+
+0.5.31: fix: add futures_dce_position_rank_other to fix futures_dce_position_rank at 20160104
+
+0.5.32: fix: futures_dce_position_rank_other return format
+
+0.5.33: add: zh_bond_cov_sina and set pandas version
+
+0.5.34: fix: set pandas version > 0.25
+
+0.5.35: add: bond_cov_comparison and bond_zh_cov
+
+0.5.36: fix: stock_info_sz_name_code return code format
+
+0.5.37: add: stock_hold
+
+0.5.38: fix: futures_dce_position_rank_other exchange symbol and variety
+
+0.5.39: add: stock_recommend
+
+0.5.40: fix: stock_recommend output format
+
+0.5.41: fix: deprecated requests-html module
+
+0.5.42: fix: reformat investing interface
+
+0.5.43: fix: qhck interface
+
+0.5.44: add: LME holding and stock report
+
+0.5.45: fix: transform the data type of stock_zh_a_spot output
+
+0.5.46: add: CFTC holding and stock
+
+0.5.47: fix: fix index_investing_global interface
+
+0.5.48: fix: fix stock_info_a_code_name interface
+
+0.5.49: fix: fix stock_zh_a_daily interface
+
+0.5.50: fix: fix get_roll_yield_bar interface
+
+0.5.51: add: stock_summary
+
+0.5.52: fix: fix get_roll_yield_bar interface
+
+0.5.53: add: add watch_jinshi_quotes interface
+
+0.5.54: add: add stock_js_price interface
+
+0.5.55: add: add futures_czce_warehouse_receipt interface
+
+0.5.56: add: add futures_dce_warehouse_receipt, futures_shfe_warehouse_receipt interface
+
+0.5.57: fix: fix macro data interface
+
+0.5.58: add: add stock_em_qsjy interface
+
+0.5.59: fix: fix fund interface
+
+0.5.60: fix: add index_bloomberg_billionaires interface
+
+0.5.61: fix: fix futures_rule interface
+
+0.5.62: add: add stock_a_pe, stock_a_pb interface
+
+0.5.63: add: add stock_a_lg_indicator interface
+
+0.5.64: add: add stock_a_high_low_statistics interface
+
+0.5.65: add: add stock_a_below_net_asset_statistics interface
+
+0.5.66: fix: fix stock_zh_a_daily default return unadjusted data
+
+0.5.67: fix: fix R and MATLAB compatibility issues
+
+0.5.68: add: add option_commodity_sina interface
+
+0.5.69: fix: fix option_commodity_sina interface
+
+0.5.70: merge: merge #4048
+
+0.5.71: add: add tool_trade_date_hist interface
+
+0.5.72: add: add fund_etf_category_sina, fund_etf_hist_sina interface
+
+0.5.73: add: add stock_report_disclosure interface
+
+0.5.74: add: add stock_zh_a_minute interface
+
+0.5.75: add: add futures_zh_minute_sina interface
+
+0.5.76: add: add option_sina_finance_minute interface
+
+0.5.77: fix: fix currency_hist interface return data format
+
+0.5.78: add: add hold field in futures_zh_minute_sina interface
+
+0.5.79: add: add stock_report_fund_hold interface
+
+0.5.80: fix: fix PG to futures cons file
+
+0.5.81: add: add stock_zh_index_hist_csindex interface
+
+0.5.82: fix: fix LU to futures cons file
+
+0.5.83: fix: fix qhkc broker_positions_process interface
+
+0.5.84: fix: fix tool_trade_date_hist_sina interface and update calendar.json
+
+0.5.85: add: add index_stock_hist interface
+
+0.5.86: fix: fix code format
+
+0.5.87: fix: fix cot interface
+
+0.5.88: fix: fix stock_em_account interface
+
+0.5.89: add: add macro_china_new_financial_credit interface
+
+0.5.90: add: add stock_sina_lhb interface
+
+0.5.91: fix: fix covid for python3.8
+
+0.5.92: fix: fix futures_daily_bar interface
+
+0.5.93: add: add macro_china_fx_gold interface
+
+0.5.94: add: add stock_zh_index_daily_em, bond_cov_jsl interface
+
+0.5.95: fix: fix get_dce_option_daily interface
+
+0.5.96: add: add stock_em_hsgt_hist interface
+
+0.5.97: fix: fix remove mplfinance package in requirements.txt
+
+0.5.98: add: add stock_hk_eniu_indicator interface
+
+0.5.99: fix: fix stock_zh_ah_daily interface
+
+0.6.1: fix: fix stock_zh_ah_daily interface set default value
+
+0.6.2: fix: fix stock_zh_a_minute interface and add adjust parameter
+
+0.6.3: fix: fix stock_zh_a_minute interface
+
+0.6.4: add: add macro_china interface
+
+0.6.5: add: add macro_china_wbck interface
+
+0.6.6: fix: fix macro_china_wbck interface
+
+0.6.7: add: add index_stock_cons_sina interface
+
+0.6.8: fix: fix option_commodity interface
+
+0.6.9: fix: fix stock_em_gpzy_pledge_ratio interface
+
+0.6.10: add: add macro_china_hb, macro_china_gksccz, macro_china_bond_public interface
+
+0.6.11: fix: fix python version should be 3.7 later
+
+0.6.12: fix: fix stock_em_gpzy_distribute_statistics_company interface
+
+0.6.13: add: add stock_us_fundamental interface
+
+0.6.14: fix: fix stock_us_fundamental interface
+
+0.6.15: fix: fix macro_china_market_margin_sh interface
+
+0.6.16: fix: fix stock_us_daily time period and adjust for specific stock
+
+0.6.17: fix: fix stock_js_weibo_report interface
+
+0.6.18: fix: fix get_shfe_option_daily interface column name
+
+0.6.19: fix: fix stock_hk_daily interface to process non-dividend stock
+
+0.6.20: fix: fix covid_baidu interface
+
+0.6.21: fix: fix futures_hf_spot interface
+
+0.6.22: fix: fix stock_zh_index_daily_tx interface
 ```

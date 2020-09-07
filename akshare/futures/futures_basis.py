@@ -1,11 +1,8 @@
 # -*- coding:utf-8 -*-
 # /usr/bin/env python
 """
-Author: Albert King
-date: 2019/11/28 13:58
-update: 2020/3/24 15:00
-contact: jindaxiang@163.com
-desc: 从生意社网站采集大宗商品现货价格及相应基差数据, 数据时间段从 20110104-至今
+Date: 2020/3/24 15:00
+Desc: 生意社网站采集大宗商品现货价格及相应基差数据, 数据时间段从 20110104-至今
 备注：现期差 = 现货价格 - 期货价格(这里的期货价格为结算价)
 黄金为 元/克, 白银为 元/千克, 玻璃现货为 元/平方米, 鸡蛋现货为 元/公斤, 鸡蛋期货为 元/500千克, 其余为 元/吨.
 焦炭现货规格是: 一级冶金焦; 焦炭期货规格: 介于一级和二级之间, 焦炭现期差仅供参考.
@@ -234,7 +231,7 @@ def _check_information(df_data, date):
 
 
 if __name__ == "__main__":
-    get_spot_price_daily_df = futures_spot_price_daily(start_day="20200315", end_day="20200320")
+    get_spot_price_daily_df = futures_spot_price_daily(start_day="20200315", end_day="20200325")
     print(get_spot_price_daily_df)
     get_spot_price_df = futures_spot_price("20200115")
     print(get_spot_price_df)

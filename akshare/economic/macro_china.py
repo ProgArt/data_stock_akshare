@@ -1,19 +1,22 @@
 # -*- coding:utf-8 -*-
 # /usr/bin/env python
 """
-Date: 2019/10/21 12:08
+Date: 2020/8/17 12:08
 Desc: 金十数据-数据中心-中国-中国宏观
 https://datacenter.jin10.com/economic
 首页-价格指数-中价-价格指数-中国电煤价格指数(CTCI)
 http://jgjc.ndrc.gov.cn/dmzs.aspx?clmId=741
+输出数据格式为 float64
 """
 import json
-import time
 import re
+import time
+from datetime import datetime
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 import requests
+from tqdm import tqdm
 
 from akshare.economic.cons import (
     JS_CHINA_CPI_YEARLY_URL,
@@ -26,12 +29,10 @@ from akshare.economic.cons import (
     JS_CHINA_FX_RESERVES_YEARLY_URL,
     JS_CHINA_ENERGY_DAILY_URL,
     JS_CHINA_NON_MAN_PMI_MONTHLY_URL,
-    JS_CHINA_RMB_DAILY_URL,
     JS_CHINA_CX_SERVICE_PMI_YEARLY_URL,
-    JS_CHINA_MARKET_MARGIN_SZ_URL,
     JS_CHINA_MARKET_MARGIN_SH_URL,
-    JS_CHINA_REPORT_URL,
 )
+
 
 # pd.set_option('display.max_rows', 10)  # just for debug
 
@@ -57,6 +58,7 @@ def macro_china_gdp_yearly():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值(%)"]
     temp_df.name = "gdp"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -81,6 +83,7 @@ def macro_china_cpi_yearly():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值(%)"]
     temp_df.name = "cpi"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -105,6 +108,7 @@ def macro_china_cpi_monthly():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值(%)"]
     temp_df.name = "cpi"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -129,6 +133,7 @@ def macro_china_ppi_yearly():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值(%)"]
     temp_df.name = "ppi"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -153,6 +158,7 @@ def macro_china_exports_yoy():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值(%)"]
     temp_df.name = "china_exports_yoy"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -177,6 +183,7 @@ def macro_china_imports_yoy():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值(%)"]
     temp_df.name = "china_imports_yoy"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -201,6 +208,7 @@ def macro_china_trade_balance():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值(亿美元)"]
     temp_df.name = "china_trade_balance"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -225,6 +233,7 @@ def macro_china_industrial_production_yoy():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值(%)"]
     temp_df.name = "china_industrial_production_yoy"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -250,6 +259,7 @@ def macro_china_pmi_yearly():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值"]
     temp_df.name = "pmi"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -275,6 +285,7 @@ def macro_china_cx_pmi_yearly():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值"]
     temp_df.name = "cx_pmi"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -300,6 +311,7 @@ def macro_china_cx_services_pmi_yearly():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值"]
     temp_df.name = "cx_services_pmi"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -336,6 +348,7 @@ def macro_china_non_man_pmi():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值"]
     temp_df.name = "non_pmi"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -411,6 +424,7 @@ def macro_china_fx_reserves_yearly():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值(亿美元)"]
     temp_df.name = "fx_reserves"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -447,6 +461,8 @@ def macro_china_m2_yearly():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df["今值(%)"]
     temp_df.name = "m2"
+    temp_df = temp_df[temp_df != 0]
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -484,10 +500,10 @@ def macro_china_shibor_all():
     big_df["9M_涨跌幅"] = temp_df["9M"].apply(lambda x: x[1])
     big_df["1Y_定价"] = temp_df["1Y"].apply(lambda x: x[0])
     big_df["1Y_涨跌幅"] = temp_df["1Y"].apply(lambda x: x[1])
-    big_df["ON_定价"] = temp_df["ON"].apply(lambda x: x[0])
-    big_df["ON_涨跌幅"] = temp_df["ON"].apply(lambda x: x[1])
-    big_df["2M_定价"] = temp_df["2M"].apply(lambda x: x[0])
-    big_df["2M_涨跌幅"] = temp_df["2M"].apply(lambda x: x[1])
+    # big_df["ON_定价"] = temp_df["ON"].apply(lambda x: x[0])
+    # big_df["ON_涨跌幅"] = temp_df["ON"].apply(lambda x: x[1])
+    # big_df["2M_定价"] = temp_df["2M"].apply(lambda x: x[0])
+    # big_df["2M_涨跌幅"] = temp_df["2M"].apply(lambda x: x[1])
     big_df = big_df.apply(lambda x: x.replace("-", np.nan))
     big_df = big_df.apply(lambda x: x.replace([None], np.nan))
     big_df.sort_index(inplace=True)
@@ -513,8 +529,8 @@ def macro_china_hk_market_info():
     temp_df = pd.DataFrame(json_data["values"]).T
     big_df = pd.DataFrame()
     temp_df.fillna(value="--", inplace=True)
-    big_df["O/N_定价"] = temp_df["O/N"].apply(lambda x: x[0])
-    big_df["O/N_涨跌幅"] = temp_df["O/N"].apply(lambda x: x[1])
+    # big_df["O/N_定价"] = temp_df["O/N"].apply(lambda x: x[0])
+    # big_df["O/N_涨跌幅"] = temp_df["O/N"].apply(lambda x: x[1])
     big_df["1W_定价"] = temp_df["1W"].apply(lambda x: x[0])
     big_df["1W_涨跌幅"] = temp_df["1W"].apply(lambda x: x[1])
     big_df["2W_定价"] = temp_df["2W"].apply(lambda x: x[0])
@@ -525,8 +541,8 @@ def macro_china_hk_market_info():
     big_df["3M_涨跌幅"] = temp_df["3M"].apply(lambda x: x[1])
     big_df["6M_定价"] = temp_df["6M"].apply(lambda x: x[0])
     big_df["6M_涨跌幅"] = temp_df["6M"].apply(lambda x: x[1])
-    big_df["9M_定价"] = temp_df["9M"].apply(lambda x: x[0])
-    big_df["9M_涨跌幅"] = temp_df["9M"].apply(lambda x: x[1])
+    # big_df["9M_定价"] = temp_df["9M"].apply(lambda x: x[0])
+    # big_df["9M_涨跌幅"] = temp_df["9M"].apply(lambda x: x[1])
     big_df["1Y_定价"] = temp_df["1Y"].apply(lambda x: x[0])
     big_df["1Y_涨跌幅"] = temp_df["1Y"].apply(lambda x: x[1])
     big_df["ON_定价"] = temp_df["ON"].apply(lambda x: x[0])
@@ -574,6 +590,7 @@ def macro_china_daily_energy():
     value_df.index = pd.to_datetime(date_list)
     temp_df = value_df[["沿海六大电库存", "日耗", "存煤可用天数"]]
     temp_df.name = "energy"
+    temp_df = temp_df.astype(float)
     return temp_df
 
 
@@ -700,6 +717,7 @@ def macro_china_market_margin_sz():
     temp_df = pd.DataFrame(json_data["values"]).T
     temp_df.columns = ["融资买入额", "融资余额", "融券卖出量", "融券余量", "融券余额", "融资融券余额"]
     temp_df.sort_index(inplace=True)
+    temp_df.index = pd.to_datetime(temp_df.index)
     temp_df = temp_df.astype("float")
     return temp_df
 
@@ -741,7 +759,7 @@ def macro_china_market_margin_sh():
             str(int(round(t * 1000))), str(int(round(t * 1000)) + 90)
         )
     )
-    json_data = json.loads(res.text[res.text.find("{") : res.text.rfind("}") + 1])
+    json_data = json.loads(res.text[res.text.find("{"): res.text.rfind("}") + 1])
     date_list = [item["date"] for item in json_data["list"]]
     value_list_1 = [item["datas"]["总量"][0] for item in json_data["list"]]
     value_list_2 = [item["datas"]["总量"][1] for item in json_data["list"]]
@@ -760,15 +778,48 @@ def macro_china_market_margin_sh():
         ]
     ).T
     value_df.columns = [
-        "融资余额(元)",
-        "融资买入额(元)",
-        "融券余量(股)",
-        "融券余量金额(元)",
-        "融券卖出量(股)",
-        "融资融券余额(元)",
+        "融资余额",
+        "融资买入额",
+        "融券余量",
+        "融券余额",
+        "融券卖出量",
+        "融资融券余额",
     ]
     value_df.index = pd.to_datetime(date_list)
     value_df.name = "market_margin_sh"
+    value_df.index = pd.to_datetime(value_df.index)
+    value_df = value_df.astype(float)
+
+    url = "https://datacenter-api.jin10.com/reports/list_v2"
+    params = {
+        "max_date": "",
+        "category": "fs",
+        "attr_id": "1",
+        "_": str(int(round(t * 1000)))
+    }
+    headers = {
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br",
+        "accept-language": "zh-CN,zh;q=0.9,en;q=0.8",
+        "cache-control": "no-cache",
+        "origin": "https://datacenter.jin10.com",
+        "pragma": "no-cache",
+        "referer": "https://datacenter.jin10.com/reportType/dc_market_margin_sse",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "x-app-id": "rU6QIu7JHe2gOUeR",
+        "x-csrf-token": "",
+        "x-version": "1.0.0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36"
+    }
+    r = requests.get(url, params=params, headers=headers)
+    temp_df = pd.DataFrame(r.json()["data"]["values"])
+    temp_df.index = pd.to_datetime(temp_df.iloc[:, 0])
+    temp_df = temp_df.iloc[:, 1:]
+    temp_df.columns = [item["name"] for item in r.json()["data"]["keys"]][1:]
+    value_df = value_df.append(temp_df)
+    value_df.drop_duplicates(inplace=True)
     return value_df
 
 
@@ -806,8 +857,11 @@ def macro_china_ctci():
     :rtype: pandas.DataFrame
     """
     url = "http://59.252.41.60/portal//out/dm?t=1578298533594"
-    res = requests.get(url)
-    return pd.DataFrame({"date": res.json()["periods"], "value": res.json()["data"][0]})
+    r = requests.get(url)
+    temp_df = pd.Series(r.json()["data"][0])
+    temp_df.index = pd.to_datetime(r.json()["periods"])
+    temp_df = temp_df.astype(float)
+    return temp_df
 
 
 # 发改委-中国电煤价格指数-各价区电煤价格指数
@@ -823,7 +877,9 @@ def macro_china_ctci_detail():
     data_df = pd.DataFrame(res.json()["data"])
     data_df.index = res.json()["names"]
     data_df.columns = ["-", "环比", "上期", "同比", "本期"]
-    return data_df[["环比", "上期", "同比", "本期"]]
+    temp = data_df[["环比", "上期", "同比", "本期"]]
+    temp = temp.astype(float)
+    return temp
 
 
 # 发改委-中国电煤价格指数-历史电煤价格指数
@@ -844,7 +900,11 @@ def macro_china_ctci_detail_hist(year="2018"):
     res = requests.post(url, data=params)
     data_df = pd.DataFrame(res.json()["data"])
     data_df.columns = res.json()["names"]
-    return data_df
+    data_df.index = data_df["地区"]
+    del data_df["地区"]
+    temp_df = data_df
+    temp_df = temp_df.astype(float)
+    return temp_df
 
 
 # 中国-利率-贷款报价利率
@@ -870,7 +930,11 @@ def macro_china_lpr():
     r = requests.get(url, params=params)
     data_text = r.text
     data_json = json.loads(data_text.strip("var WPuRCBoA=")[:-1])
-    return pd.DataFrame(data_json["result"]["data"])
+    temp_df = pd.DataFrame(data_json["result"]["data"])
+    temp_df.index = pd.to_datetime(temp_df["TRADE_DATE"])
+    del temp_df["TRADE_DATE"]
+    temp_df = temp_df.astype(float)
+    return temp_df
 
 
 # 中国-货币-货币供应量
@@ -969,7 +1033,7 @@ def macro_china_enterprise_boom_index():
 
 
 # 中国-全国税收收入
-def macro_china_national_tax_receipts():
+def macro_china_national_tax_receipts() -> pd.DataFrame:
     """
     http://data.eastmoney.com/cjsj/nationaltaxreceipts.aspx
     中国-全国税收收入
@@ -996,6 +1060,392 @@ def macro_china_national_tax_receipts():
         temp_df = pd.read_html(text_data)[0].iloc[:-1, :-9]
         big_df = big_df.append(temp_df, ignore_index=True)
     big_df.columns = ["季度", "税收收入合计", "较上年同期", "季度环比"]
+    return big_df
+
+
+def macro_china_new_financial_credit() -> pd.DataFrame:
+    """
+    中国-新增信贷数据
+    http://data.eastmoney.com/cjsj/xzxd.html
+    :return: 新增信贷数据
+    :rtype: pandas.DataFrame
+    """
+    url = "http://data.eastmoney.com/cjsj/newfinancialcredit.aspx"
+    params = {
+        "p": "1",
+    }
+    r = requests.get(url, params=params)
+    raw_total_page_num = pd.read_html(r.text)[-1].dropna(axis=1).iloc[-1, 0]
+    total_page_num = int(re.compile(r"\d+").findall(raw_total_page_num)[0])
+    big_df = pd.DataFrame()
+    for page in tqdm(range(1, total_page_num+1)):
+        params = {
+            "p": page,
+        }
+        r = requests.get(url, params=params)
+        temp_df = pd.read_html(r.text)[-1].dropna(axis=1).iloc[:-1, :]
+        big_df = big_df.append(temp_df, ignore_index=True)
+    big_df.columns = ["月份", "当月", "当月-同比增长", "当月-环比增长", "累计", "累计-同比增长"]
+    big_df["当月-同比增长"] = big_df["当月-同比增长"].str.replace("%", "")
+    big_df["当月-环比增长"] = big_df["当月-环比增长"].str.replace("%", "")
+    big_df["累计-同比增长"] = big_df["累计-同比增长"].str.replace("%", "")
+    return big_df
+
+
+def macro_china_fx_gold() -> pd.DataFrame:
+    """
+    东方财富-外汇和黄金储备
+    http://data.eastmoney.com/cjsj/hjwh.html
+    :return: 外汇和黄金储备
+    :rtype: pandas.DataFrame
+    """
+    url = "http://data.eastmoney.com/DataCenter_V3/Chart/cjsj/goldforexreserve.ashx"
+    params = {
+        "mkt": "99",
+        "stat": "17",
+        "r": "0.11885134457023705",
+        "isxml": "false",
+    }
+    r = requests.get(url, params=params)
+    data_json = r.json()
+    data_df = pd.DataFrame([data_json["X"].split(","), data_json["Y"][0].split(","), data_json["Y"][1].split(",")]).T
+    data_df.columns = ["date", "foreign_exchange_reserve", "gold_reserves"]
+    return data_df
+
+
+def macro_china_cpi():
+    """
+    东方财富-中国居民消费价格指数
+    http://data.eastmoney.com/cjsj/cpi.html
+    :return: 东方财富中国居民消费价格指数
+    :rtype: pandas.DataFrame
+    """
+    url = "http://data.eastmoney.com/cjsj/consumerpriceindex.aspx?p=1"
+    page_num = int(re.findall(r'\d', pd.read_html(url, header=2)[-1].iloc[-1, 1])[0])
+    big_df = pd.read_html(url, header=2)[-1].iloc[:-1, :]
+    for page in range(2, page_num+1):
+        url = f"http://data.eastmoney.com/cjsj/consumerpriceindex.aspx?p={page}"
+        big_df = big_df.append(pd.read_html(url, header=2)[-1].iloc[:-1, :])
+    big_df.columns = ["月份",
+                      "全国-当月",
+                      "全国-同比增长",
+                      "全国-环比增长",
+                      "全国-累计",
+                      "城市-当月",
+                      "城市-同比增长",
+                      "城市-环比增长",
+                      "城市-累计",
+                      "农村-当月",
+                      "农村-同比增长",
+                      "农村-环比增长",
+                      "农村-累计",
+                      ]
+    return big_df
+
+
+def macro_china_gdp():
+    """
+    东方财富-中国国内生产总值
+    http://data.eastmoney.com/cjsj/gdp.html
+    :return: 东方财富中国国内生产总值
+    :rtype: pandas.DataFrame
+    """
+    url = "http://data.eastmoney.com/cjsj/grossdomesticproduct.aspx?p=1"
+    page_num = int(re.findall(r'\d', pd.read_html(url, header=2)[-1].iloc[-1, 1])[0])
+    big_df = pd.read_html(url, header=1)[-1].iloc[:-1, :]
+    for page in range(2, page_num+1):
+        url = f"http://data.eastmoney.com/cjsj/grossdomesticproduct.aspx?p={page}"
+        big_df = big_df.append(pd.read_html(url, header=1)[-1].iloc[:-1, :])
+    big_df = big_df.iloc[:, :9]
+    big_df.columns = ["季度",
+                      "国内生产总值-绝对值",
+                      "国内生产总值-同比增长",
+                      "第一产业-绝对值",
+                      "第一产业-同比增长",
+                      "第二产业-绝对值",
+                      "第二产业-同比增长",
+                      "第三产业-绝对值",
+                      "第三产业-同比增长",
+                      ]
+    return big_df
+
+
+def macro_china_ppi():
+    """
+    东方财富-中国工业品出厂价格指数
+    http://data.eastmoney.com/cjsj/ppi.html
+    :return: 东方财富中国工业品出厂价格指数
+    :rtype: pandas.DataFrame
+    """
+    url = "http://data.eastmoney.com/cjsj/productpricesindex.aspx?p=1"
+    page_num = int(re.findall(r'\d', pd.read_html(url, header=2)[-1].iloc[-1, 1])[0])
+    big_df = pd.read_html(url, header=0)[-1].iloc[:-1, :]
+    for page in range(2, page_num+1):
+        url = f"http://data.eastmoney.com/cjsj/productpricesindex.aspx?p={page}"
+        big_df = big_df.append(pd.read_html(url, header=0)[-1].iloc[:-1, :])
+    big_df = big_df.iloc[:, :4]
+    return big_df
+
+
+def macro_china_pmi():
+    """
+    东方财富-中国采购经理人指数
+    http://data.eastmoney.com/cjsj/pmi.html
+    :return: 东方财富中国采购经理人指数
+    :rtype: pandas.DataFrame
+    """
+    url = "http://data.eastmoney.com/cjsj/purchasingmanagerindex.aspx?p=1"
+    page_num = int(re.findall(r'\d', pd.read_html(url, header=2)[-1].iloc[-1, 1])[0])
+    big_df = pd.read_html(url, header=1)[-1].iloc[:-1, :]
+    for page in range(2, page_num+1):
+        url = f"http://data.eastmoney.com/cjsj/purchasingmanagerindex.aspx?p={page}"
+        big_df = big_df.append(pd.read_html(url, header=1)[-1].iloc[:-1, :])
+    big_df = big_df.iloc[:, :5]
+    big_df.columns = [
+        "月份",
+        "制造业-指数",
+        "制造业-同比增长",
+        "非制造业-指数",
+        "非制造业-同比增长",
+    ]
+    return big_df
+
+
+def macro_china_gdzctz():
+    """
+    东方财富-中国城镇固定资产投资
+    http://data.eastmoney.com/cjsj/gdzctz.html
+    :return: 东方财富中国城镇固定资产投资
+    :rtype: pandas.DataFrame
+    """
+    url = "http://data.eastmoney.com/cjsj/townassetsinvest.aspx?p=1"
+    page_num = int(re.findall(r'\d', pd.read_html(url, header=2)[-1].iloc[-1, 1])[0])
+    big_df = pd.read_html(url, header=0)[-1].iloc[:-1, :]
+    for page in range(2, page_num+1):
+        url = f"http://data.eastmoney.com/cjsj/townassetsinvest.aspx?p={page}"
+        big_df = big_df.append(pd.read_html(url, header=0)[-1].iloc[:-1, :])
+    big_df = big_df.iloc[:, :5]
+    big_df.columns = [
+        "月份",
+        "当月",
+        "同比增长",
+        "环比增长",
+        "自年初累计",
+    ]
+    return big_df
+
+
+def macro_china_hgjck():
+    """
+    东方财富-海关进出口增减情况一览表
+    http://data.eastmoney.com/cjsj/hgjck.html
+    :return: 东方财富-海关进出口增减情况一览表
+    :rtype: pandas.DataFrame
+    """
+    url = "http://data.eastmoney.com/cjsj/importandexport.aspx?p=1"
+    page_num = int(re.findall(r'\d', pd.read_html(url, header=2)[-1].iloc[-1, 1])[0])
+    big_df = pd.read_html(url, header=1)[-1].iloc[:-1, :]
+    for page in range(2, page_num+1):
+        url = f"http://data.eastmoney.com/cjsj/importandexport.aspx?p={page}"
+        big_df = big_df.append(pd.read_html(url, header=1)[-1].iloc[:-1, :])
+    big_df = big_df.iloc[:, :11]
+    big_df.columns = [
+        "月份",
+        "当月出口额-金额",
+        "当月出口额-同比增长",
+        "当月出口额-环比增长",
+        "当月进口额-金额",
+        "当月进口额-同比增长",
+        "当月进口额-环比增长",
+        "累计出口额-金额",
+        "累计出口额-同比增长",
+        "累计进口额-金额",
+        "累计进口额-同比增长",
+    ]
+    return big_df
+
+
+def macro_china_czsr():
+    """
+    东方财富-财政收入
+    http://data.eastmoney.com/cjsj/czsr.html
+    :return: 东方财富-财政收入
+    :rtype: pandas.DataFrame
+    """
+    url = "http://data.eastmoney.com/cjsj/staterevenue.aspx?p=1"
+    page_num = int(re.findall(r'\d', pd.read_html(url, header=2)[-1].iloc[-1, 1])[0])
+    big_df = pd.read_html(url, header=0)[-1].iloc[:-1, :]
+    for page in range(2, page_num+1):
+        url = f"http://data.eastmoney.com/cjsj/staterevenue.aspx?p={page}"
+        big_df = big_df.append(pd.read_html(url, header=0)[-1].iloc[:-1, :])
+    big_df = big_df.iloc[:, :6]
+    big_df.columns = [
+        "月份",
+        "当月",
+        "当月-同比增长",
+        "当月-环比增长",
+        "累计",
+        "累计-同比增长",
+    ]
+    return big_df
+
+
+def macro_china_whxd():
+    """
+    东方财富-外汇贷款数据
+    http://data.eastmoney.com/cjsj/whxd.html
+    :return: 东方财富-外汇贷款数据
+    :rtype: pandas.DataFrame
+    """
+    url = "http://data.eastmoney.com/cjsj/foreignexchangeloan.aspx?p=1"
+    page_num = int(re.findall(r'\d', pd.read_html(url, header=2)[-1].iloc[-1, 1])[0])
+    big_df = pd.read_html(url, header=0)[-1].iloc[:-1, :]
+    for page in range(2, page_num+1):
+        url = f"http://data.eastmoney.com/cjsj/foreignexchangeloan.aspx?p={page}"
+        big_df = big_df.append(pd.read_html(url, header=0)[-1].iloc[:-1, :])
+    big_df = big_df.iloc[:, :5]
+    big_df.columns = [
+        "月份",
+        "当月",
+        "同比增长",
+        "环比增长",
+        "累计",
+    ]
+    return big_df
+
+
+def macro_china_wbck():
+    """
+    东方财富-本外币存款
+    http://data.eastmoney.com/cjsj/wbck.html
+    :return: 东方财富-本外币存款
+    :rtype: pandas.DataFrame
+    """
+    url = "http://data.eastmoney.com/cjsj/foreigncurrencydeposit.aspx?p=1"
+    page_num = int(re.findall(r'\d', pd.read_html(url, header=2)[-1].iloc[-1, 1])[0])
+    big_df = pd.read_html(url, header=0)[-1].iloc[:-1, :]
+    for page in range(2, page_num+1):
+        url = f"http://data.eastmoney.com/cjsj/foreigncurrencydeposit.aspx?p={page}"
+        big_df = big_df.append(pd.read_html(url, header=0)[-1].iloc[:-1, :])
+    big_df = big_df.iloc[:, :5]
+    big_df.columns = [
+        "月份",
+        "当月",
+        "同比增长",
+        "环比增长",
+        "累计",
+    ]
+    return big_df
+
+
+def macro_china_hb():
+    """
+    中国-货币净投放与净回笼
+    http://www.chinamoney.com.cn/chinese/hb/
+    :return: 货币净投放与净回笼
+    :rtype: pandas.DataFrame
+    """
+    current_year = datetime.today().year
+    url = "http://www.chinamoney.com.cn/ags/ms/cm-u-bond-publish/TicketPutAndBackStatByWeek"
+    params = {
+        "t": "1597986289666",
+        "t": "1597986289666",
+    }
+    big_df = pd.DataFrame()
+    for year in tqdm(range(1997, current_year+1)):
+        payload = {
+            "startWeek": f"{year}-01",
+            "endWeek": f"{year}-52",
+            "pageSize": "5000",
+            "pageNo": "1",
+        }
+        r = requests.post(url, params=params, data=payload)
+        page_num = r.json()["data"]["pageTotal"]
+        for page in range(1, page_num+1):
+            payload = {
+                "startWeek": f"{year}-01",
+                "endWeek": f"{year}-52",
+                "pageSize": "5000",
+                "pageNo": str(page),
+            }
+            r = requests.post(url, params=params, data=payload)
+            temp_df = pd.DataFrame(r.json()["data"]["resultList"])
+            big_df = big_df.append(temp_df, ignore_index=True)
+            # print(big_df)
+    big_df = big_df.sort_values(by=["startDate"])
+    big_df.reset_index(inplace=True, drop=True)
+    big_df.columns = ["start_date", "net_put_in", "back", "end_date", "put_in", "date"]
+    return big_df
+
+
+def macro_china_gksccz():
+    """
+    中国-央行公开市场操作
+    http://www.chinamoney.com.cn/chinese/yhgkscczh/
+    :return: 央行公开市场操作
+    :rtype: pandas.DataFrame
+    """
+    url = "http://www.chinamoney.com.cn/ags/ms/cm-u-bond-publish/TicketHandle"
+    params = {
+        "t": "1597986289666",
+        "t": "1597986289666",
+    }
+    big_df = pd.DataFrame()
+    payload = {
+        "pageSize": "1000",
+        "pageNo": "1",
+    }
+    r = requests.post(url, params=params, data=payload)
+    page_num = r.json()["data"]["pageTotal"]
+    for page in tqdm(range(1, page_num+1)):
+        payload = {
+            "pageSize": "1000",
+            "pageNo": str(page),
+        }
+        r = requests.post(url, params=params, data=payload)
+        temp_df = pd.DataFrame(r.json()["data"]["resultList"])
+        big_df = big_df.append(temp_df, ignore_index=True)
+        # print(big_df)
+    big_df = big_df.sort_values(by=["operationFromDate"])
+    big_df.reset_index(inplace=True, drop=True)
+    big_df.columns = ["rate", "trading_method", "deal_amount", "period", "operation_from_date"]
+    return big_df
+
+
+def macro_china_bond_public():
+    """
+    中国-债券信息披露-债券发行
+    http://www.chinamoney.com.cn/chinese/xzjfx/
+    :return: 债券发行
+    :rtype: pandas.DataFrame
+    """
+    url = "http://www.chinamoney.com.cn/ags/ms/cm-u-bond-an/bnBondEmit"
+    payload = {
+        "enty": "",
+        "bondType": "",
+        "bondNameCode": "",
+        "leadUnderwriter": "",
+        "pageNo": "1",
+        "pageSize": "1000",
+        "limit": "1",
+    }
+    r = requests.post(url, data=payload)
+    big_df = pd.DataFrame(r.json()['records'])
+    big_df.columns = [
+        "issue_price",
+        "emit_enty",
+        "coupon_type",
+        "plnd_issue_vlmn_str",
+        "issue_price_str",
+        "issue_date",
+        "bond_type",
+        "plnd_issue_vlmn",
+        "bond_name",
+        "bond_code",
+        "rtng_shrt",
+        "bond_period",
+        "defined_code",
+    ]
     return big_df
 
 
@@ -1089,3 +1539,47 @@ if __name__ == "__main__":
     # 中国-全国税收收入
     macro_china_national_tax_receipts_df = macro_china_national_tax_receipts()
     print(macro_china_national_tax_receipts_df)
+
+    # 中国-新增信贷数据
+    macro_china_new_financial_credit_df = macro_china_new_financial_credit()
+    print(macro_china_new_financial_credit_df)
+
+    # 中国-外汇和黄金储备
+    macro_china_fx_gold_df = macro_china_fx_gold()
+    print(macro_china_fx_gold_df)
+
+    macro_china_cpi_df = macro_china_cpi()
+    print(macro_china_cpi_df)
+
+    macro_china_gdp_df = macro_china_gdp()
+    print(macro_china_gdp_df)
+
+    macro_china_ppi_df = macro_china_ppi()
+    print(macro_china_ppi_df)
+
+    macro_china_pmi_df = macro_china_pmi()
+    print(macro_china_pmi_df)
+
+    macro_china_gdzctz_df = macro_china_gdzctz()
+    print(macro_china_gdzctz_df)
+
+    macro_china_hgjck_df = macro_china_hgjck()
+    print(macro_china_hgjck_df)
+
+    macro_china_czsr_df = macro_china_czsr()
+    print(macro_china_czsr_df)
+
+    macro_china_whxd_df = macro_china_whxd()
+    print(macro_china_whxd_df)
+
+    macro_china_wbck_df = macro_china_wbck()
+    print(macro_china_wbck_df)
+
+    macro_china_hb_df = macro_china_hb()
+    print(macro_china_hb_df)
+
+    macro_china_gksccz_df = macro_china_gksccz()
+    print(macro_china_gksccz_df)
+
+    macro_china_bond_public_df = macro_china_bond_public()
+    print(macro_china_bond_public_df)

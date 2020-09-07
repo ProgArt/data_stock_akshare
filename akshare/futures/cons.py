@@ -1,19 +1,14 @@
 # -*- coding:utf-8 -*-
 # /usr/bin/env python
 """
-Author: Albert King
-date: 2019/9/30 13:58
-contact: jindaxiang@163.com
-desc: 期货配置文件
+Date: 2019/9/30 13:58
+Desc: 期货配置文件
 """
 import datetime
 import json
 import os
 import pickle
 import re
-
-# futures_rule-futures_rule
-futures_rule_url = "http://www.gtjaqh.com/gtqh/html/calendar/dataTable"
 
 # hf_sina_spot
 hf_subscribe_exchange_symbol_url = "http://finance.sina.com.cn/money/future/hf.html"
@@ -146,6 +141,7 @@ market_exchange_symbols = {
         "EG",
         "RR",
         "EB",  # 20191009
+        "PG",
     ],
     "czce": [
         "WH",
@@ -199,6 +195,7 @@ market_exchange_symbols = {
         "NR",
         "SP",
         "SS",
+        "LU",
     ],
 }
 

@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 # /usr/bin/env python
 """
-Date: 2020/09/07 16:58
-Desc: 获取各合约展期收益率, 日线数据从 daily_bar 函数获取
+Date: 2020/06/22 12:58
+Desc: 各合约展期收益率, 日线数据从 daily_bar 函数获取, 需要在收盘后运行
 """
 import datetime
 import re
@@ -15,7 +15,7 @@ import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
 from akshare.futures import cons
-from akshare.futures.daily_bar import get_futures_daily
+from akshare.futures.futures_daily_bar import get_futures_daily
 from akshare.futures.symbol_var import symbol_market, symbol_varieties
 
 register_matplotlib_converters()
@@ -51,7 +51,7 @@ def _plot(plot_df):
 
 
 def get_roll_yield_bar(
-    type_method="date", var="RB", date="20191009", start_day=None, end_day=None, plot=False
+    type_method="var", var="RB", date="20200622", start_day=None, end_day=None, plot=False
 ):
     """
     展期收益率
@@ -60,11 +60,11 @@ def get_roll_yield_bar(
     :param date: 指定交易日 format： YYYYMMDD
     :param start_day: 开始日期 format：YYYYMMDD
     :param end_day: 结束日期 format：YYYYMMDD
-    :param plot: True or False作图
+    :param plot: True or False 是否作图
     :return: pandas.DataFrame
     展期收益率数据(DataFrame)
-        ry      展期收益率
-        index   日期或品种
+    ry      展期收益率
+    index   日期或品种
     """
 
     date = cons.convert_date(date) if date is not None else datetime.date.today()
@@ -78,7 +78,7 @@ def get_roll_yield_bar(
     )
 
     if type_method == "symbol":
-        df = get_futures_daily(start_day=date, end_day=date, market=symbol_market(var))
+        df = get_futures_daily(start_date=date, end_date=date, market=symbol_market(var))
         df = df[df["variety"] == var]
         if plot:
             _plot_bar_2(df[["symbol", "close"]])
@@ -88,9 +88,11 @@ def get_roll_yield_bar(
         df = pd.DataFrame()
         for market in ["dce", "cffex", "shfe", "czce"]:
             df = df.append(
-                get_futures_daily(start_day=date, end_day=date, market=market)
+                get_futures_daily(start_date=date, end_date=date, market=market)
             )
         var_list = list(set(df["variety"]))
+        if "IO" in var_list:
+            var_list.remove("IO")  # IO 为期权
         df_l = pd.DataFrame()
         for var in var_list:
             ry = get_roll_yield(date, var, df=df)
@@ -127,7 +129,7 @@ def get_roll_yield_bar(
         return df_l
 
 
-def get_roll_yield(date=None, var="CU", symbol1=None, symbol2=None, df=None):
+def get_roll_yield(date=None, var="LR", symbol1=None, symbol2=None, df=None):
     """
     指定交易日指定品种（主力和次主力）或任意两个合约的展期收益率
     Parameters
@@ -139,10 +141,10 @@ def get_roll_yield(date=None, var="CU", symbol1=None, symbol2=None, df=None):
     df: DataFrame或None 从dailyBar得到合约价格，如果为空就在函数内部抓dailyBar，直接喂给数据可以让计算加快
     Return
     -------
-        tuple
-        roll_yield
-        near_by
-        deferred
+    tuple
+    roll_yield
+    near_by
+    deferred
     """
     # date = "20200304"
     date = cons.convert_date(date) if date is not None else datetime.date.today()
@@ -153,13 +155,15 @@ def get_roll_yield(date=None, var="CU", symbol1=None, symbol2=None, df=None):
         var = symbol_varieties(symbol1)
     if not isinstance(df, pd.DataFrame):
         market = symbol_market(var)
-        df = get_futures_daily(start_day=date, end_day=date, market=market)
+        df = get_futures_daily(start_date=date, end_date=date, market=market)
     if var:
         df = df[
             ~df["symbol"].str.contains("efp")
         ]  # 20200304 由于交易所获取的数据中会有比如 "CUefp"，所以在这里过滤
         df = df[df["variety"] == var].sort_values("open_interest", ascending=False)
         df["close"] = df["close"].astype("float")
+        if len(df["close"]) < 2:
+            return None
         symbol1 = df["symbol"].tolist()[0]
         symbol2 = df["symbol"].tolist()[1]
 
@@ -182,19 +186,23 @@ def get_roll_yield(date=None, var="CU", symbol1=None, symbol2=None, df=None):
 
 
 if __name__ == "__main__":
-    get_roll_yield_bar_df = get_roll_yield_bar(
-        type_method="date", date="20200415", plot=True
-    )
-    print(get_roll_yield_bar_df)
     get_roll_yield_bar_range_df = get_roll_yield_bar(
         type_method="date",
         var="CF",
-        start_day="20191210",
-        end_day="20200305",
+        start_day="20200510",
+        end_day="20200621",
         plot=True,
     )
     print(get_roll_yield_bar_range_df)
+
+    get_roll_yield_bar_range_df = get_roll_yield_bar(
+        type_method="var",
+        date="20200714",
+        plot=True,
+    )
+    print(get_roll_yield_bar_range_df)
+
     get_roll_yield_bar_symbol = get_roll_yield_bar(
-        type_method="date", var="RB", start_day="20191009", end_day="20191030", plot=True
+        type_method="symbol", var="PG", start_day="20200109", end_day="20200721", plot=True
     )
     print(get_roll_yield_bar_symbol)

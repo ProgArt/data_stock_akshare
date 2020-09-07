@@ -27,9 +27,12 @@ def _get_franchise_china_page_num() -> int:
         "province": "",
         "city": "",
         "cpf.cpage": "1",
-        "cpf.pagesize": "10",
+        "cpf.pagesize": "100",
     }
-    r = requests.get(url, params=payload)
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
+    }
+    r = requests.get(url, params=payload, headers=headers)
     soup = BeautifulSoup(r.text, "lxml")
     page_num = re.findall(
         re.compile(r"\d+"),
@@ -55,9 +58,12 @@ def franchise_china() -> pd.DataFrame:
             "province": "",
             "city": "",
             "cpf.cpage": str(page),
-            "cpf.pagesize": "10",
+            "cpf.pagesize": "100",
         }
-        r = requests.get(url, params=payload)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
+        }
+        r = requests.get(url, params=payload, headers=headers)
         temp_df = pd.read_html(r.text)[1]
         inner_df = temp_df.iloc[:, 0].str.split("  ", expand=True)
         inner_df.columns = ["特许人名称", "备案时间", "地址"]

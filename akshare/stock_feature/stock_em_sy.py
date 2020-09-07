@@ -1,10 +1,8 @@
 # -*- coding:utf-8 -*-
 # /usr/bin/env python
 """
-Author: Albert King
-date: 2019/12/27 18:02
-contact: jindaxiang@163.com
-desc: 东方财富网-数据中心-特色数据-商誉
+Date: 2019/12/27 18:02
+Desc: 东方财富网-数据中心-特色数据-商誉
 东方财富网-数据中心-特色数据-商誉-A股商誉市场概况: http://data.eastmoney.com/sy/scgk.html
 东方财富网-数据中心-特色数据-商誉-商誉减值预期明细: http://data.eastmoney.com/sy/yqlist.html
 东方财富网-数据中心-特色数据-商誉-个股商誉减值明细: http://data.eastmoney.com/sy/jzlist.html
@@ -466,9 +464,9 @@ if __name__ == "__main__":
     print(stock_em_sy_profile_df)
     stock_em_sy_yq_list_df = stock_em_sy_yq_list(symbol="沪市主板", trade_date="2019-12-31")
     print(stock_em_sy_yq_list_df)
-    stock_em_sy_jz_list_df = stock_em_sy_jz_list(symbol="沪市主板", trade_date="2019-06-30")
+    stock_em_sy_jz_list_df = stock_em_sy_jz_list(symbol="沪市主板", trade_date="2019-12-31")
     print(stock_em_sy_jz_list_df)
-    stock_em_sy_list_df = stock_em_sy_list(symbol="沪市主板", trade_date="2019-09-30")
+    stock_em_sy_list_df = stock_em_sy_list(symbol="沪市主板", trade_date="2019-12-31")
     print(stock_em_sy_list_df)
-    stock_em_sy_hy_list_df = stock_em_sy_hy_list(trade_date="2019-09-30")
+    stock_em_sy_hy_list_df = stock_em_sy_hy_list(trade_date="2019-12-31")
     print(stock_em_sy_hy_list_df)

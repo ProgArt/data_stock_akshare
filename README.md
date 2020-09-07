@@ -13,16 +13,14 @@
 [![](https://img.shields.io/github/issues/jindaxiang/akshare)](https://github.com/jindaxiang/akshare)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-# ![](https://github.com/jindaxiang/akshare/blob/master/example/images/akshare_home.png)
-
 ## Overview
 
-[AkShare](https://github.com/jindaxiang/akshare) support Python 3.6+, aims to make fetch financial data as convenient as possible.
+[AkShare](https://github.com/jindaxiang/akshare) support Python 3.7+, aims to make fetch financial data as convenient as possible.
 
 **Write less, get more!**
 
 - Documentation: [中文文档](https://akshare.readthedocs.io/zh_CN/latest/)
-- Documentation: [English Forthcoming](https://akshare.readthedocs.io/zh_CN/latest/)
+- Documentation: [中文文档-国内加速访问](https://akshare-4gize6tod19f2d2e-1252952517.tcloudbaseapp.com/index.html)
 
 # ![](https://github.com/jindaxiang/akshare/blob/master/example/images/AkShare.svg)
 
@@ -39,6 +37,10 @@ pip install akshare --upgrade
 ```cmd
 pip install akshare -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host=mirrors.aliyun.com  --upgrade
 ```
+
+### PR
+
+Please check [documentation](https://www.akshare.xyz/zh_CN/latest/contributor.html) if you want to contribute to AkShare
 
 ### Docker
 
@@ -98,7 +100,7 @@ Code
 
 ```python
 import akshare as ak
-import mplfinance as mpf
+import mplfinance as mpf  # Please install mplfinance
 
 stock_us_daily_df = ak.stock_us_daily(symbol="AAPL", adjust="qfq")
 stock_us_daily_df = stock_us_daily_df[["open", "high", "low", "close", "volume"]]

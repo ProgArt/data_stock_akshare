@@ -184,9 +184,6 @@ def covid_19_163(indicator: str = "实时") -> pd.DataFrame:
     elif indicator == "权威发布":
         return pd.DataFrame(data_info_json["power"])
 
-    elif indicator == "滚动新闻":
-        return pd.DataFrame(data_info_json["scrollNews"])
-
     elif indicator == "境外输入疫情趋势":
         url = "https://c.m.163.com/ug/api/wuhan/app/data/list-by-area-code"
         params = {
@@ -233,7 +230,7 @@ def covid_19_dxy(indicator: str = "西藏自治区") -> pd.DataFrame:
     soup = BeautifulSoup(r.text, "lxml")
     # news-china
     text_data_news = str(
-        soup.find_all("script", attrs={"id": "getTimelineService1"})
+        soup.find("script", attrs={"id": "getTimelineService1"})
     )
     temp_json = text_data_news[
         text_data_news.find("= [{") + 2: text_data_news.rfind("}catch")
@@ -276,7 +273,7 @@ def covid_19_dxy(indicator: str = "西藏自治区") -> pd.DataFrame:
     global_df = pd.DataFrame(data_text_json)
 
     # info
-    dxy_static = soup.find(attrs={"id": "getStatisticsService"}).get_text()
+    dxy_static = str(soup.find("script", attrs={"id": "getStatisticsService"}))
     data_json = json.loads(
         dxy_static[dxy_static.find("= {") + 2: dxy_static.rfind("}c")]
     )
@@ -346,7 +343,7 @@ def covid_19_dxy(indicator: str = "西藏自治区") -> pd.DataFrame:
                 data_df[data_df["provinceName"] == indicator]["cities"].values[0]
             )
             if sub_area.empty:
-                return print("暂无分区域数据")
+                return None
             sub_area.columns = ["区域", "现在确诊人数", "确诊人数", "疑似人数", "治愈人数", "死亡人数", "id"]
             sub_area = sub_area[["区域", "现在确诊人数", "确诊人数", "疑似人数", "治愈人数", "死亡人数"]]
             return sub_area
@@ -407,7 +404,8 @@ def covid_19_baidu(indicator: str = "浙江") -> pd.DataFrame:
     url = "https://voice.baidu.com/act/newpneumonia/newpneumonia/?from=osari_pc_1"
     r = requests.get(url)
     soup = BeautifulSoup(r.text, "lxml")
-    data_json = demjson.decode(soup.find(attrs={"id": "captain-config"}).text)
+    temp_soup = str(soup.find(attrs={"id": "captain-config"}))
+    data_json = demjson.decode(temp_soup[temp_soup.find("{"): temp_soup.rfind("}")+1])
 
     big_df = pd.DataFrame()
     for i, p in enumerate(
@@ -460,28 +458,6 @@ def covid_19_baidu(indicator: str = "浙江") -> pd.DataFrame:
         return move_in_df
     elif indicator == "热门迁出地":
         return move_out_df
-    elif indicator == "今日疫情热搜":
-        return pd.DataFrame(json_data_news["data"][0]["list"][0]["item"])
-    elif indicator == "防疫知识热搜":
-        return pd.DataFrame(json_data_news["data"][0]["list"][1]["item"])
-    elif indicator == "热搜谣言粉碎":
-        return pd.DataFrame(json_data_news["data"][0]["list"][2]["item"])
-    elif indicator == "复工复课热搜":
-        return pd.DataFrame(json_data_news["data"][0]["list"][3]["item"])
-    elif indicator == "热门人物榜":
-        return pd.DataFrame(json_data_news["data"][0]["list"][4]["item"])
-    elif indicator == "历史疫情热搜":
-        return pd.DataFrame(json_data_news["data"][0]["list"][5]["item"])
-    elif indicator == "搜索正能量榜":
-        return pd.DataFrame(json_data_news["data"][0]["list"][6]["item"])
-    elif indicator == "游戏榜":
-        return pd.DataFrame(json_data_news["data"][0]["list"][7]["item"])
-    elif indicator == "影视榜":
-        return pd.DataFrame(json_data_news["data"][0]["list"][8]["item"])
-    elif indicator == "小说榜":
-        return pd.DataFrame(json_data_news["data"][0]["list"][9]["item"])
-    elif indicator == "疫期飙升榜":
-        return pd.DataFrame(json_data_news["data"][0]["list"][10]["item"])
     elif indicator == "实时播报":
         return spot_report
     elif indicator == "中国分省份详情":
@@ -836,7 +812,6 @@ if __name__ == "__main__":
         "实时医院新闻播报",
         "前沿知识",
         "权威发布",
-        "滚动新闻",
         "境外输入疫情趋势",
         "境外输入确诊病例来源",
     ]
@@ -868,17 +843,6 @@ if __name__ == "__main__":
     indicator_list = [
         "热门迁入地",
         "热门迁出地",
-        "今日疫情热搜",
-        "防疫知识热搜",
-        "热搜谣言粉碎",
-        "复工复课热搜",
-        "热门人物榜",
-        "历史疫情热搜",
-        "搜索正能量榜",
-        "游戏榜",
-        "影视榜",
-        "小说榜",
-        "疫期飙升榜",
         "实时播报",
         "中国分省份详情",
         "中国分城市详情",

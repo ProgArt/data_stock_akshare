@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # /usr/bin/env python
 """
-Date: 2020/5/11 13:58
+Date: 2020/8/21 13:58
 Desc: AkShare's pypi info file
 """
 import re
@@ -32,17 +32,17 @@ setuptools.setup(
     author="Albert King",
     author_email="jindaxiang@163.com",
     license="MIT",
-    description="A tool for downloading economic and financial data!",
+    description="AkShare is an elegant and simple financial data interface library for Python, built for human beings!",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jindaxiang/akshare",
     packages=setuptools.find_packages(),
     install_requires=[
-        "bs4>=0.0.1",
+        "beautifulsoup4>=4.9.1",
         "lxml>=4.2.1",
         "matplotlib>=3.1.1",
         "numpy>=1.15.4",
-        "pandas>=0.24",
+        "pandas>=0.25",
         "requests>=2.22.0",
         "demjson>=2.2.4",
         "pyexecjs>=1.5.1",
@@ -50,7 +50,6 @@ setuptools.setup(
         "pypinyin>=0.35.0",
         "websocket-client>=0.56.0",
         "html5lib>=1.0.1",
-        "requests-html>=0.10.0",
         "scikit-learn>=0.22",
         "fonttools>=4.2.2",
         "xlrd>=1.2.0",
@@ -59,7 +58,6 @@ setuptools.setup(
         "jsonpath>=0.82",
         "tabulate>=0.8.6",
         "decorator>=4.4.2",
-        "mplfinance>=0.12.3a3"
     ],
     package_data={"": ["*.py", "*.json", "*.pk", "*.woff", "*.js"]},
     keywords=[
@@ -80,11 +78,10 @@ setuptools.setup(
         "data",
     ],
     classifiers=[
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.7",
 )
